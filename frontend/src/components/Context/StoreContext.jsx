@@ -5,7 +5,7 @@ export const StoreContext = createContext(null);
 
 export const StoreContextProvider = (props) => {
 
-    const url = "http://localhost:3000";
+    const url = "https://tomato-yp4x.onrender.com";
 
     const [cartItems, setCartItems] = useState({});
     const [token, setToken] = useState("");
