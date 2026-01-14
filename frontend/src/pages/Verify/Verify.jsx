@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import "./Verify.css";
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { StoreContext } from '../../components/Context/StoreContext';
@@ -11,22 +11,16 @@ const Verify = () => {
 
   const { url } = useContext(StoreContext);
   const navigate = useNavigate();
+  const hasRun = useRef(false);
 
   const verifyPayment = async () => {
     try {
-      const response = await axios.post(
-        `${url}/api/order/verify`,
-        {
-          success: success === "true",
-          orderId: orderId
-        }
-      );
+      const response = await axios.post(`${url}/api/order/verify`, {
+        success: success === "true",
+        orderId
+      });
 
-      if (response.data.success) {
-        navigate("/myorders");
-      } else {
-        navigate("/");
-      }
+      navigate(response.data.success ? "/myorders" : "/");
     } catch (error) {
       console.error(error);
       navigate("/");
@@ -34,11 +28,13 @@ const Verify = () => {
   };
 
   useEffect(() => {
+    if (hasRun.current) return;
+    hasRun.current = true;
     verifyPayment();
-  }, []);
+  }, [success, orderId, url, navigate]);
 
   return (
-    <div className='verify'>
+    <div className="verify">
       <div className="spinner"></div>
     </div>
   );
