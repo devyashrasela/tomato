@@ -8,7 +8,6 @@ import cartRouter from './routes/cartRoutes.js';
 import orderRouter from './routes/orderRoutes.js';
 
 const app = express();
-const PORT = 3000;
 
 app.use(express.json());
 app.use(cors());
@@ -27,8 +26,8 @@ app.get('/', (req, res) => {
   res.json({ status: 'Server is running' });
 });
   
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on http://localhost:${process.env.PORT}`);
 }); 
 
 
