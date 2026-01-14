@@ -5,7 +5,7 @@ import Stripe from "stripe";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const placeOrder = async (req, res) => {
-    const frontendUrl = "http://localhost:5174";
+    const frontendUrl = "https://tomato-nv2f.vercel.app";
 
     try{
         const newOrder = new orderModel({
