@@ -6,14 +6,14 @@ import { StoreContext } from '../Context/StoreContext';
 
 const Navbar = ({ setShowLogin }) => {
     const [menu, setMenu] = useState("menu");
-    const {getTotalCartAmount,token,setToken} = useContext(StoreContext);
-    
+    const { getTotalCartAmount, token, setToken } = useContext(StoreContext);
+
     const navigate = useNavigate();
 
-    const logout = () =>{
+    const logout = () => {
         localStorage.removeItem("token");
         setToken("");
-        navigate("/"); 
+        navigate("/");
     }
 
     return (
@@ -21,7 +21,7 @@ const Navbar = ({ setShowLogin }) => {
             <Link to="/">
                 <img src={assets.logo} alt="Logo" className='logo' />
             </Link>
-            <ul className="navbar-menu"> 
+            <ul className="navbar-menu">
                 <Link to="/" onClick={() => setMenu("home")} className={menu === "home" ? "active" : ""}>home</Link>
                 <a href="#explore-menu" onClick={() => setMenu("menu")} className={menu === "menu" ? "active" : ""}>menu</a>
                 <a href="#app-download" onClick={() => setMenu("mobile-app")} className={menu === "mobile-app" ? "active" : ""}>mobile-app</a>
@@ -33,11 +33,10 @@ const Navbar = ({ setShowLogin }) => {
                     <Link to="/cart">
                         <img src={assets.basket_icon} alt="" />
                     </Link>
-                    <div className={getTotalCartAmount()===0 ? "" : "dot"}></div>
+                    <div className={getTotalCartAmount() === 0 ? "" : "dot"}></div>
                 </div>
-                {!token ? 
-                    // <button onClick={() => setShowLogin(true)}>sign in</button> : 
-                    <button onClick={() => console.log("Sign in clicked")}>sign in</button> : 
+                {!token ?
+                    <button onClick={() => setShowLogin(true)}>sign in</button> :
                     <div className='navbar-profile'>
                         <img src={assets.profile_icon} alt="" />
                         <ul className='navbar-profile-dropdown'>
