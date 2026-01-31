@@ -5,7 +5,7 @@ export const StoreContext = createContext(null);
 
 export const StoreContextProvider = (props) => {
 
-    const url = "https://tomato-yp4x.onrender.com";
+    const url = "https://tomato-8d25.vercel.app";
 
     const [cartItems, setCartItems] = useState({});
     const [token, setToken] = useState("");

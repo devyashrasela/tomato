@@ -9,7 +9,7 @@ import { ToastContainer } from 'react-toastify';
 
 const App = () => {
 
-  const url = "https://tomato-yp4x.onrender.com";
+  const url = "https://tomato-8d25.vercel.app";
 
   return (
     <div> 
