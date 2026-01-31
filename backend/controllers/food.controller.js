@@ -1,11 +1,10 @@
 import FoodModel from "../models/foodModel.js";
-import fs from "fs";
+import { deleteFromCloudinary } from "../config/cloudinary.js";
 
 //add food item
 const addFood = async (req, res) => {
     try {
-        const image_filename = req.file?.filename;
-        if (!image_filename) {
+        if (!req.cloudinaryResult) {
             return res.status(400).json({
                 success: false,
                 message: "Image is required"
@@ -16,8 +15,9 @@ const addFood = async (req, res) => {
             name: req.body.name,
             description: req.body.description,
             price: req.body.price,
-            category: req.body.category, 
-            image: image_filename
+            category: req.body.category,
+            image: req.cloudinaryResult.secure_url,
+            cloudinary_id: req.cloudinaryResult.public_id
         });
 
         await foodItem.save();
@@ -37,13 +37,13 @@ const addFood = async (req, res) => {
 };
 
 //list food items
-const listFood = async (req, res) => { 
-    try{
-        const foodItems = await FoodModel.find({}); 
-        res.json({success:true, foodItems:foodItems});
-    }catch(error){
+const listFood = async (req, res) => {
+    try {
+        const foodItems = await FoodModel.find({});
+        res.json({ success: true, foodItems: foodItems });
+    } catch (error) {
         console.error(error);
-        res.json({ success:false, message:"error"});
+        res.json({ success: false, message: "error" });
     }
 }
 
@@ -51,14 +51,18 @@ const listFood = async (req, res) => {
 const removeFood = async (req, res) => {
     try {
         const food = await FoodModel.findById(req.body.id);
-        fs.unlink(`uploads/${food.image}`, () => {});
+
+        // Delete image from Cloudinary if cloudinary_id exists
+        if (food.cloudinary_id) {
+            await deleteFromCloudinary(food.cloudinary_id);
+        }
 
         await FoodModel.findByIdAndDelete(req.body.id);
-        res.json({ success:true, message:"Food item removed successfully" });
-    }catch (error) {
+        res.json({ success: true, message: "Food item removed successfully" });
+    } catch (error) {
         console.log(error);
-        res.json({success:false,message:"Error"});
+        res.json({ success: false, message: "Error" });
     }
 }
 
-export {addFood,listFood,removeFood};
+export { addFood, listFood, removeFood };

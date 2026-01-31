@@ -13,23 +13,21 @@ app.use(express.json());
 app.use(cors());
 
 // db connection
-connectDB(); 
+connectDB();
 
 //api endpoints
 app.use('/api/food', foodRouter);
-app.use('/images',express.static('uploads'));
 app.use('/api/user', userRouter);
-app.use('/api/cart',cartRouter);
-app.use('/api/order',orderRouter);
+app.use('/api/cart', cartRouter);
+app.use('/api/order', orderRouter);
 
 app.get('/', (req, res) => {
   res.json({ status: 'Server is running' });
 });
-  
+
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on http://localhost:${process.env.PORT}`);
-}); 
+});
 
 
 
- 
