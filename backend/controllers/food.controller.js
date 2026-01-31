@@ -4,10 +4,12 @@ import { deleteFromCloudinary } from "../config/cloudinary.js";
 //add food item
 const addFood = async (req, res) => {
     try {
+        console.log('addFood called, cloudinaryResult:', req.cloudinaryResult);
+
         if (!req.cloudinaryResult) {
             return res.status(400).json({
                 success: false,
-                message: "Image is required"
+                message: "Image is required - Cloudinary upload may have failed"
             });
         }
 
@@ -21,6 +23,7 @@ const addFood = async (req, res) => {
         });
 
         await foodItem.save();
+        console.log('Food item saved with image:', req.cloudinaryResult.secure_url);
 
         res.status(201).json({
             success: true,
@@ -28,7 +31,7 @@ const addFood = async (req, res) => {
         });
 
     } catch (error) {
-        console.error(error);
+        console.error('addFood error:', error);
         res.status(500).json({
             success: false,
             message: error.message

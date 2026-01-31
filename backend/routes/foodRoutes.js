@@ -13,13 +13,15 @@ const upload = multer({ storage: storage });
 const uploadToCloud = async (req, res, next) => {
     try {
         if (req.file) {
+            console.log('Uploading to Cloudinary...');
             const result = await uploadToCloudinary(req.file.buffer);
+            console.log('Cloudinary upload successful:', result.secure_url);
             req.cloudinaryResult = result;
         }
         next();
     } catch (error) {
         console.error('Cloudinary upload error:', error);
-        res.status(500).json({ success: false, message: 'Image upload failed' });
+        return res.status(500).json({ success: false, message: 'Image upload failed: ' + error.message });
     }
 };
 
