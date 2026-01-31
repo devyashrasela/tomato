@@ -16,6 +16,23 @@
     width:50px;
 }
 
+.list-table-format.deleting {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.loading-message,
+.empty-message {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+}
+
+.cursor.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
 
 @media (max-width: 600px){
     .list-table-format{

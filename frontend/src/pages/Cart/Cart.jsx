@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
 
-  const { cartItems, food_list, removeFromCart, getTotalCartAmount, url} = useContext(StoreContext);
-  const navigate = useNavigate(); 
+  const { cartItems, food_list, removeFromCart, getTotalCartAmount, url } = useContext(StoreContext);
+  const navigate = useNavigate();
 
   return (
     <div className='cart'>
@@ -26,7 +26,7 @@ const Cart = () => {
             return (
               <div>
                 <div className="cart-items-title cart-items-item">
-                  <img src={`${url}/images/${item.image}`} alt={item.title} />
+                  <img src={item.image} alt={item.title} />
                   <p>{item.name}</p>
                   <p>${item.price}</p>
                   <p>{cartItems[item._id]}</p>
@@ -50,7 +50,7 @@ const Cart = () => {
             <hr />
             <div className="cart-total-details">
               <p>Delivery Fee</p>
-              <p>${getTotalCartAmount()===0 ? 0 : 2}</p>
+              <p>${getTotalCartAmount() === 0 ? 0 : 2}</p>
             </div>
             <hr />
             <div className="cart-total-details">
@@ -58,7 +58,7 @@ const Cart = () => {
               <p>${getTotalCartAmount() + (getTotalCartAmount() === 0 ? 0 : 2)}</p>
             </div>
           </div>
-          <button onClick={()=>navigate('/order')}>Proceed to Checkout</button>
+          <button onClick={() => navigate('/order')}>Proceed to Checkout</button>
         </div>
         <div className="cart-promocode">
           <div>

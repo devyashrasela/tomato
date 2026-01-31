@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import './Add.css';
 import { assets } from '../../assets/assets';
 import axios from 'axios';
@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 const Add = ({ url }) => {
 
     const [image, setImage] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [data, setData] = useState({
         name: "",
         description: "",
@@ -22,27 +23,32 @@ const Add = ({ url }) => {
 
     const onSubmitHandler = async (event) => {
         event.preventDefault();
-        const formData = new FormData();
-        formData.append("name", data.name);
-        formData.append("description", data.description);
-        formData.append("price", Number(data.price));
-        formData.append("category", data.category);
-        formData.append("image", image);
-        const response = await axios.post(`${url}/api/food/add`, formData);
-        if (response.data.success) {
-            setData({
-                name: "",
-                description: "",
-                price: "",
-                category: "Salad",
-            })
-            setImage(false);
-            toast.success(response.data.message);
+        setLoading(true);
+        try {
+            const formData = new FormData();
+            formData.append("name", data.name);
+            formData.append("description", data.description);
+            formData.append("price", Number(data.price));
+            formData.append("category", data.category);
+            formData.append("image", image);
+            const response = await axios.post(`${url}/api/food/add`, formData);
+            if (response.data.success) {
+                setData({
+                    name: "",
+                    description: "",
+                    price: "",
+                    category: "Salad",
+                })
+                setImage(false);
+                toast.success(response.data.message);
+            } else {
+                toast.error(response.data.message || "Failed to add item");
+            }
+        } catch (error) {
+            toast.error("Error adding food item");
+        } finally {
+            setLoading(false);
         }
-        else {
-
-        }
-
     }
 
     return (
@@ -76,7 +82,7 @@ const Add = ({ url }) => {
                             <option value="Deserts">Deserts</option>
                             <option value="Sandwiche">Sandwiche</option>
                             <option value="Cake">Cake</option>
-                            <woption value="Pure Veg">Pure Veg</woption>
+                            <option value="Pure Veg">Pure Veg</option>
                             <option value="Pasta">Pasta</option>
                             <option value="Noodles">Noodles</option>
                         </select>
@@ -86,7 +92,9 @@ const Add = ({ url }) => {
                         <input onChange={onChangeHandler} value={data.price} type="number" name="price" placeholder="$20" />
                     </div>
                 </div>
-                <button type='submit' className='add-btn'>ADD</button>
+                <button type='submit' className='add-btn' disabled={loading}>
+                    {loading ? "Adding..." : "ADD"}
+                </button>
             </form>
         </div>
     )
